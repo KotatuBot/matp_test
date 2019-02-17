@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats
 from pandas.tools.plotting import scatter_matrix
 
 
@@ -37,14 +38,19 @@ class ScatterPlotings():
         return default_dicts
 
     def ScatterPlot(self,data_frame):
-        df = pd.DataFrame(data_frame)
-        scatter_matrix(df, diagonal='kde', color='green', alpha=1)
-        plt.savefig("image2.png")
+        scatter_matrix(data_frame, diagonal='kde', color='green', alpha=1)
+        plt.savefig("ScaterCommon.png")
+
+    def Normalization(self,data_frame):
+        df = data_frame.apply(scipy.stats.zscore, axis=1)
+        return df
 
 
     def main(self,title,data):
         data_frame = self.DataAlignment(title,data)
-        self.ScatterPlot(data_frame)
+        dataframe2 = pd.DataFrame(data_frame)
+        df = self.Normalization(dataframe2)
+        self.ScatterPlot(df)
 
 if __name__ == "__main__":
     title = ["test1","test2","test3"]
